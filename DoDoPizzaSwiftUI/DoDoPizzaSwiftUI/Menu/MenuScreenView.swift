@@ -7,7 +7,6 @@
 
 import SwiftUI
 
-
 struct MenuScreenView: View {
     
     @StateObject private var viewModel = MenuViewModel()
@@ -15,21 +14,24 @@ struct MenuScreenView: View {
     
     var body: some View {
         NavigationStack(path: $path) {
-            Group {
-                if viewModel.isLoading {
-                    ProgressView()
-                } else if let error = viewModel.errorMessage {
-                    VStack {
-                        Text("Ошибка: \(error)")
-                        
-                        Button("Повторить") {
-                            Task {
-                                await viewModel.loadProducts()
-                            }
+            if viewModel.isLoading {
+                ProgressView()
+            } else if let error = viewModel.errorMessage {
+                VStack {
+                    Text("Ошибка: \(error)")
+                    
+                    Button("Повторить") {
+                        Task {
+                            await viewModel.loadProducts()
                         }
                     }
-                } else {
-                    List(viewModel.products) { product in
+                }
+            } else {
+                VStack {
+                    
+                    CategoryView(selectedCategory: $viewModel.selectedCategory)
+                    
+                    List(viewModel.filteredProducts) { product in
                         Button {
                             path.append(product)
                         } label: {
@@ -38,10 +40,9 @@ struct MenuScreenView: View {
                         .buttonStyle(.plain)
                     }
                     .listStyle(.plain)
-                    .ignoresSafeArea(edges: [.bottom, .leading, .trailing])
-                    .navigationDestination(for: Product.self) { product in
-                        DetailScreenView(product: product)
-                    }
+                }
+                .navigationDestination(for: Product.self) { product in
+                    DetailScreenView(product: product)
                 }
             }
         }

@@ -11,19 +11,6 @@ protocol IProductsService {
     func fetchProducts() async throws -> [Product]
 }
 
-//struct ProductsService: IProductsService {
-//
-//    var products = [
-//        Product(id: 1, name: "Пепперони", description: "Сыр, колбаса", price: 420, image: "pepperoni"),
-//        Product(id: 2, name: "4 Сыра", description: "4 разных сыра", price: 650, image: "margarita"),
-//        Product(id: 3, name: "Чикен", description: "Курица, сыр, помидоры", price: 340, image: "chickenRanchPizza")
-//    ]
-//    
-//    func fetchProducts() -> [Product] {
-//        return products
-//    }
-//}
-
 final class ProductsService: IProductsService {
     
     private let urlProducts = "http://localhost:3001/products"

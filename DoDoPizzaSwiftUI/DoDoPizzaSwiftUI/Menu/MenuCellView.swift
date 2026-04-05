@@ -13,10 +13,15 @@ struct MenuCellView: View {
     
     var body: some View {
         HStack(spacing: 12) {
-            Image(product.image)
-                .resizable()
-                .scaledToFill()
-                .frame(width: 120, height: 120)
+            AsyncImage(url: URL(string: product.image)) { image in
+                image
+                    .resizable()
+                    .scaledToFit()
+            } placeholder: {
+                ProgressView()
+                    .scaleEffect(2)
+            }
+            .frame(width: 100, height: 100)
             
             VStack(alignment: .leading, spacing: 6) {
                 
@@ -37,16 +42,12 @@ struct MenuCellView: View {
                         product.price,
                         format: .currency(code: "RUB")
                             .precision(.fractionLength(0)))
-                        .font(.body)
-                        .foregroundStyle(.brown)
-                        .padding(.horizontal, 16)
-                        .padding(.vertical, 8)
-                        .background(Capsule().fill(Color.orange).opacity(0.1))
-                    
+                    .font(.body)
+                    .foregroundStyle(.brown)
+                    .padding(.horizontal, 16)
+                    .padding(.vertical, 8)
+                    .background(Capsule().fill(Color.orange).opacity(0.1))
                 }
-                
-                
-                
             }
             
             Spacer()
